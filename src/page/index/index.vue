@@ -75,9 +75,7 @@ var sizes;
 var settings;
 var tickCount = 0;
 var snow = [];
-import storage from "@/libs/localstorage.js";
 import { mapState } from "vuex";
-import { WOW } from "wowjs";
 export default {
   data() {
     return {
@@ -98,18 +96,11 @@ export default {
     this.initMain();
     this.timer = setInterval(() => {
       $(".bauble").addClass("light");
-      $(".star").addClass("star-light");
+
       setTimeout(() => {
         $(".bauble").removeClass("light");
       }, 500);
     }, 1000);
-    this.$nextTick(() => {
-      // 在dom渲染完后,再执行动画
-      const wow = new WOW({
-        live: false,
-      });
-      wow.init();
-    });
   },
   methods: {
     initMain() {
@@ -253,6 +244,8 @@ export default {
 .context {
   width: 100%;
   height: 100%;
+  overflow: hidden;
+  position: relative;
   margin: 0;
   padding: 0;
   font-family: 'Lato', sans-serif;
@@ -277,7 +270,8 @@ export default {
   height: 100%;
   width: 100%;
   position: relative;
-  background-color: #1E1E1E;
+  background-size: 100% 100% !important;
+  background: url('~@/assets/images/bg.jpg') no-repeat center center;
 }
 
 #effect {
@@ -286,7 +280,6 @@ export default {
   right: 0;
   height: 100%;
   width: 100%;
-  color: #888;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -301,6 +294,8 @@ export default {
 #footer {
   position: absolute;
   bottom: 0;
+  left: 0;
+  right: 0;
   height: 100px;
   display: flex;
   align-items: center;
@@ -322,10 +317,17 @@ export default {
 
 .container {
   position: absolute;
-  
-  left: 300px;
-  top: 50px;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  width: 100px;
+  text-align: center;
+  bottom: 0px;
+  height: 700px;
   z-index: 1;
+  transform: scale(2, 2);
+  -ms-transform: scale(2, 2); /* IE 9 */
+  -webkit-transform: scale(2, 2); /* Safari and Chrome */
 
   .socks {
     position: absolute;
@@ -665,9 +667,6 @@ export default {
     position: absolute;
     top: 102px;
     left: -60px;
-  }
-
-  .star-light {
   }
 }
 </style>
