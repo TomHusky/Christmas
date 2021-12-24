@@ -81,10 +81,14 @@
           选择图片
         </a>
       </span>
+      <button v-if="imgURL" class="cancel-btn" @click="onEnter">
+        保存到本地
+      </button>
     </div>
   </div>
 </template>
 <script>
+import { downloadComposeImg } from "@/api/system.js";
 export default {
   data() {
     return {
@@ -126,8 +130,30 @@ export default {
   methods: {
     // 上传裁剪好的头像
     uploadAvatar(src) {
-      this.imgSrc = src;
-      this.showCutter = false;
+      downloadComposeImg(src, this.bgType).then((res) => {
+        console.log("response: ", res);
+        if (res.data) {
+          // 这里是获取到的图片base64编码,这里只是个例子哈，要自行编码图片替换这里才能测试看到效果
+          const imgUrl = `data:image/png;base64,${res.data}`;
+          // 如果浏览器支持msSaveOrOpenBlob方法（也就是使用IE浏览器的时候），那么调用该方法去下载图片
+          if (window.navigator.msSaveOrOpenBlob) {
+            const bstr = atob(imgUrl.split(",")[1]);
+            let n = bstr.length;
+            const u8arr = new Uint8Array(n);
+            while (n--) {
+              u8arr[n] = bstr.charCodeAt(n);
+            }
+            const blob = new Blob([u8arr]);
+            window.navigator.msSaveOrOpenBlob(blob, "合成头像" + "." + "png");
+          } else {
+            // 这里就按照chrome等新版浏览器来处理
+            const a = document.createElement("a");
+            a.href = imgUrl;
+            a.setAttribute("download", "合成头像");
+            a.click();
+          }
+        }
+      });
     },
     // 选中图片
     selectImg(e) {
@@ -649,7 +675,7 @@ export default {
         justify-content: center;
         align-items: center;
 
-        .preview-img{
+        .preview-img {
           height: 100%;
           width: 100%;
           position: absolute;
@@ -669,6 +695,15 @@ export default {
     display: flex;
     justify-content: center;
     margin-top: 20px;
+
+    .cancel-btn {
+      background: #217346;
+      width: 100px;
+      margin-left: 20px;
+      border-radius: 5px;
+      color: #fff;
+      border: 1px solid #e7e7e7 !important;
+    }
 
     .file-upload {
       overflow: hidden;

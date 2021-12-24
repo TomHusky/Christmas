@@ -122,10 +122,12 @@ export function postJson({
 //封装post json请求
 export function upload({
   url,
-  file
+  file,
+  type
 }) {
   let forms = new FormData()
   forms.append('file', file)
+  forms.append('type', type)
   let sendObject = {
     url: url,
     method: 'post',
