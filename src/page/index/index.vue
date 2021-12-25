@@ -52,6 +52,7 @@
         <div class="line four"></div>
       </div>
     </div>
+    <div id="to-head" @click="toHead"><span>头像框</span></div>
     <div id="footer">
       <span>Copyright © 2019-2021 房东的Tom</span>
       <span>备案号:</span>
@@ -103,6 +104,9 @@ export default {
     }, 1000);
   },
   methods: {
+    toHead(){
+      this.$router.push("/headimg");
+    },
     initMain() {
       // 📝 Fetch all DOM nodes in jQuery and Snap SVG
       container = $("#snow");
@@ -291,6 +295,27 @@ export default {
   }
 }
 
+#to-head {
+  z-index: 9999;
+  position: absolute;
+  display: flex;
+  bottom: 150px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background-color: rgba(244, 90, 104, 0.8);
+  align-items: center;
+  justify-content: center;
+
+  span {
+    font-size: 28px;
+    color: #fff;
+  }
+}
+
 #footer {
   position: absolute;
   bottom: 0;
@@ -323,7 +348,7 @@ export default {
   width: 100px;
   text-align: center;
   bottom: 0px;
-  height: 700px;
+  height: 650px;
   z-index: 1;
   transform: scale(2, 2);
   -ms-transform: scale(2, 2); /* IE 9 */
@@ -384,7 +409,7 @@ export default {
   .base {
     width: 210px;
     height: 10px;
-    background: #CCC;
+    background: transparent;
     position: absolute;
     top: 304px;
     left: -45px;

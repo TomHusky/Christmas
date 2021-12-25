@@ -4,7 +4,20 @@
       <div class="c-right">
         <H3>预览</H3>
         <div class="preview">
-          <div class="preview-img"></div>
+          <img
+            class="left-img"
+            @click="nexthead(1)"
+            src="../assets/images/left.png"
+          />
+          <img
+            class="right-img"
+            @click="nexthead(2)"
+            src="../assets/images/right.png"
+          />
+          <img
+            class="preview-img"
+            :src= bgTypes[bgType].bgUrl
+          />
           <canvas
             ref="$canvas"
             :width="bgTypes[bgType].width"
@@ -99,9 +112,21 @@ export default {
       minWidth: 20, // 选择框最小宽度
       bgType: "a1",
       bgTypes: {
-        a1: { width: 310, height: 310 },
-        a2: { width: 100, height: 100 },
-        a3: { width: 100, height: 100 },
+        a1: {
+          width: 310,
+          height: 310,
+          bgUrl: "https://img2020.cnblogs.com/blog/1556860/202112/1556860-20211225093231100-413225556.png",
+        },
+        a2: {
+          width: 470,
+          height: 470,
+          bgUrl: "https://img2020.cnblogs.com/blog/1556860/202112/1556860-20211225093234470-485109243.png",
+        },
+        a3: {
+          width: 470,
+          height: 470,
+          bgUrl: "https://img2020.cnblogs.com/blog/1556860/202112/1556860-20211225093238240-19215836.png",
+        },
       },
       containerBoxData: {
         width: 750,
@@ -128,10 +153,24 @@ export default {
     document.removeEventListener("touchmove", this.onMouseMove);
   },
   methods: {
+    nexthead(type) {
+      let index = parseInt(this.bgType.substring(1));
+      if (type == 1) {
+        index++;
+      } else {
+        index--;
+      }
+      if (index > 3) {
+        index = 1;
+      }
+      if (index < 1) {
+        index = 3;
+      }
+      this.bgType = "a" + index;
+    },
     // 上传裁剪好的头像
     uploadAvatar(src) {
       downloadComposeImg(src, this.bgType).then((res) => {
-        console.log("response: ", res);
         if (res.data) {
           // 这里是获取到的图片base64编码,这里只是个例子哈，要自行编码图片替换这里才能测试看到效果
           const imgUrl = `data:image/png;base64,${res.data}`;
@@ -659,10 +698,9 @@ export default {
       margin-bottom: 100px;
 
       H3 {
-        font-size: 25px;
-        height: 30px;
+        font-size: 30px;
+        font-weight: bold;
         margin-bottom: 50px;
-        line-height: 30px;
       }
 
       .preview {
@@ -670,22 +708,36 @@ export default {
         display: flex;
         width: 500px;
         height: 500px;
-        border: solid 1px #e8e8e8;
         margin: 0 auto;
         justify-content: center;
         align-items: center;
+
+        .left-img {
+          left: -100px;
+          top: 225px;
+          position: absolute;
+          width: 50px;
+          height: 50px;
+        }
+
+        .right-img {
+          position: absolute;
+          width: 50px;
+          height: 50px;
+          right: -100px;
+          top: 225px;
+        }
 
         .preview-img {
           height: 100%;
           width: 100%;
           position: absolute;
-          background-size: 100% 100% !important;
-          background: url('~@/assets/images/a1.png') no-repeat;
         }
 
         canvas {
           border: solid 1px #e8e8e8;
-          background-image: url('~@/assets/images/empty.png');
+          background-size: 100% 100% !important;
+          background: url('~@/assets/images/empty.png') no-repeat;
         }
       }
     }

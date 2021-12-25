@@ -21,7 +21,7 @@ export const getCityInfo = () => {
  */
 export const downloadComposeImg = (file, type) => {
   return upload({
-    url: 'http://127.0.0.1:8011/tools/image/downloadComposeImg',
+    url: 'https://cloud.go996.cn/tools/image/downloadComposeImg',
     file: file,
     type: type
   })

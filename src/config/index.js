@@ -22,7 +22,7 @@ module.exports = {
     //  本地环境发布目录
     dev: '/',
     //  生产环境发布目录
-    pro: './index'
+    pro: '/christmas/'
   },
   /**
    *  api请求基础路径
